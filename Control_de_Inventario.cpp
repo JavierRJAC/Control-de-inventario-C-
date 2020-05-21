@@ -5,7 +5,7 @@
 using namespace std;
 
 int main(){
-	int Menu , ArticulosN, Posiciones, i, ProductosN = 0;
+	int Menu , ArticulosN, Posiciones, i, ProductosN = 0, id= 1;
 	int codigoB;//Codigo para modificar los productos.
 	char respuesta;//Respuesta para salir del o no del menu
 	
@@ -16,18 +16,13 @@ int main(){
 		float costoT;//Costo Total por Todos los productos existentes.
 		float precioUnidad;//Precio por unidad osea un solo producto.
 		int existencia;//Exitencia es el numero de productos que hay.
-		string estado;//Estado default del producto mas adelante se cambia si ya no esta en existencia
-		int StockMinimo;//Esto es como la cantidad minima que siempre tiene de productos antes que se tenga que rellenar otra vez. 
+		string estado;//Estado entre activo y inactivo para poder borrar un elemnto logicamente
+		int StockMinimo;//Esto es como la cantidad minima que siempre tiene de productos antes que se tenga que rellenar otra vez. PD: esto ocuparemos para comparar y crear la lista de Productos agotados.
 	} Almacen[300];//Array o vector en el cual se guardaran todos los datos ingresados. 
 	
    cout <<"Bienvenido al sistema de inventario"<<endl;
    
    SaltoMenu:
-   	
-   	for(i=0; i<=ProductosN; i++){
-		
-		Almacen[i].estado = "Si";// el estado "Si" es que hay productos si es "No" es que no hay producto.
-	}
 	
    	
    float AlmacenCostoT = 0; //Reinicio de costo total para que el valor sea el indicadicado
@@ -73,9 +68,6 @@ int main(){
    			cout <<"Ingrese el nombre del articulo "<<i+1<<endl;
    			cin>>Almacen[Posiciones].nombre;
    			
-   			cout <<"Ingrese el codigo del articulo"<<endl;
-   			cin>>Almacen[Posiciones].codigo;
-   			
    			cout <<"Ingrese un descripcion del producto"<<endl;
    			cin>>Almacen[Posiciones].descripcion;
    			
@@ -90,9 +82,13 @@ int main(){
    			
    			cout <<"\n";
    			
+   			Almacen[i].estado = "activo";// el estado "Si" es que hay productos si es "No" es que no hay producto.
+   			
    			Almacen[Posiciones].costoT = (Almacen[Posiciones].precioUnidad * Almacen[Posiciones].existencia);
    		    
+   		    Almacen[Posiciones].codigo = id;//Codigo por medio de id;
    		    
+   		    id++;//Contador para que id sea diferenete
    		    Posiciones++;//Posiciones no se resetea se guarda la catidad y luego si ingresamos otraves productos, guarda en la posicion donde nos quedamos. 
 		   }
 		   
@@ -131,9 +127,6 @@ int main(){
 			cout <<"Ingrese el nombre del articulo "<<i+1<<endl;
    			cin>>Almacen[i].nombre;
    			
-   			cout <<"Ingrese el codigo del articulo"<<endl;
-   			cin>>Almacen[i].codigo;
-   			
    			cout <<"Ingrese un descripcion del producto"<<endl;
    			cin>>Almacen[i].descripcion;
    			
@@ -143,8 +136,8 @@ int main(){
    			cout <<"Ingrese el numero de productos en existencia"<<endl;
    			cin>>Almacen[i].existencia;
    			
-   			cout <<"Ingrese el estado de exitencia entre Si y No"<<endl;
-   			cin>>Almacen[i].estado;
+   			//cout <<"Ingrese el estado de exitencia entre Si y No"<<endl;
+   			//cin>>Almacen[i].estado;
    			
    			cout <<"Ingrese el stock minimo para reabastecer los productos"<<endl;
    			cin>>Almacen[i].StockMinimo;
@@ -210,6 +203,8 @@ int main(){
    		 	
    		for(i = 0; i<ProductosN; i++){//La varible acumulativa Mostrar se ocupa aqui para mostrar el total de articulos guardados exacto; 
    			
+   			if(Almacen[i].estado == "activo"){
+   			
    			cout <<"Nombre Articulo:"<<Almacen[i].nombre<<endl;
    			cout <<"Codigo Articulo:"<<Almacen[i].codigo<<endl;
    			cout <<"Descripcion del Articulo:"<<Almacen[i].descripcion<<endl;
@@ -222,7 +217,7 @@ int main(){
    			cout <<"\n"; 
    			
    			AlmacenCostoT += Almacen[i].costoT;
-   			
+   		    }
 		   }
 		   
 		   
