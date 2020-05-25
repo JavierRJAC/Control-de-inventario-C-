@@ -4,18 +4,21 @@
 
 using namespace std;
 
-int main(){
+int main()
+{
 	int Menu , ArticulosN, Posiciones, i, ProductosN = 0, id= 1;
 	int codigoB;//Codigo para modificar los productos.
 	char respuesta;//Respuesta para salir del o no del menu
 	
-	struct Producto {
+	struct Producto 
+	{
 		string nombre; //Nombre Producto.
 		int codigo;//Codigo con el que se indetifica el producto o ID.
 		string descripcion;//Descripcion del producto.
 		float costoT;//Costo Total por Todos los productos existentes.
 		float precioUnidad;//Precio por unidad osea un solo producto.
 		int existencia;//Exitencia es el numero de productos que hay.
+		int vendidos;//Es para el numero de productos vendidos y luego restarlo por la existencia y compararlo con el stock minimo.
 		string estado;//Estado entre activo y inactivo para poder borrar un elemnto logicamente
 		int StockMinimo;//Esto es como la cantidad minima que siempre tiene de productos antes que se tenga que rellenar otra vez. PD: esto ocuparemos para comparar y crear la lista de Productos agotados.
 	} Almacen[300];//Array o vector en el cual se guardaran todos los datos ingresados. 
@@ -25,7 +28,7 @@ int main(){
    SaltoMenu:
 	
    	
-   float AlmacenCostoT = 0; //Reinicio de costo total para que el valor sea el indicadicado
+   float AlmacenCostoT = 0; //Reinicio de costo total para que el valor sea el indicado
    	
    cout <<"\n";
    
@@ -44,7 +47,7 @@ int main(){
    cout <<"6 = Salir del programa"<<endl;
    cout <<"\n";
    
-   cout <<"Por favor ingrese el numero del apartado del menu selecionado"<<endl;
+   cout <<"Por favor ingrese la opcion que ha selecionado"<<endl;
    cin>>Menu;
    
    
@@ -59,7 +62,7 @@ int main(){
    		cout <<"\n";
    		
    		cout <<"Por favor coloque la cantidad de articulos a ingresar"<<endl;
-   		cin>>ArticulosN;
+   		cin>>ArticulosN;//aqui se guarda la cantidad de articulos ingresados
    		
    		cout <<"\n";
    		
@@ -127,7 +130,7 @@ int main(){
 			cout <<"Ingrese el nombre del articulo "<<i+1<<endl;
    			cin>>Almacen[i].nombre;
    			
-   			cout <<"Ingrese un descripcion del producto"<<endl;
+   			cout <<"Ingrese una descripcion del producto"<<endl;
    			cin>>Almacen[i].descripcion;
    			
    			cout <<"Ingrese el precio por unidad"<<endl;
@@ -136,19 +139,17 @@ int main(){
    			cout <<"Ingrese el numero de productos en existencia"<<endl;
    			cin>>Almacen[i].existencia;
    			
-   			//cout <<"Ingrese el estado de exitencia entre Si y No"<<endl;
-   			//cin>>Almacen[i].estado;
-   			
    			cout <<"Ingrese el stock minimo para reabastecer los productos"<<endl;
    			cin>>Almacen[i].StockMinimo;
    			
    			Almacen[i].costoT = (Almacen[i].precioUnidad * Almacen[i].existencia);
-				
+			
+			
 		} 	
    		
    	}
    		 cout <<"\n";
-   		 
+   		    		 
    		 cout <<"¿Quires Salir a Menu Si = s o NO = n?"<<endl;
    		 cin >>respuesta;
    		 
@@ -171,22 +172,61 @@ int main(){
    		cout <<"\n";
    		cout <<"**********************Eliminar articulo**********************"<<endl;
    		cout <<"\n";
+   		//bloque de codigo para elimiar producto
+   		cout<<"Ingrese el identificador del producto para su eliminacion \n"<<endl;
+   		cin>>codigoB;//almacena el id
    		
-   		
-   		
-   		
-   		
+   		for(i=0; i<ProductosN; i++)//recorre la estructura en busca del id
+		   {
+   				if(Almacen[i].codigo == codigoB)
+				   {
+					Almacen[i].estado = "inactivo";//por medio del id le asigna al producto la inactividad
+					}	
+			}
+		
+		cout <<"\n";
+   		cout <<" ¿Desea Mostrar Inventario Si = s o NO = n ?"<<endl;//pregunta si desea mostrar el menu
+   		 cin >>respuesta;
    		 
-   		 
+   		 if(respuesta == 's')
+			{
+   		 		for(i = 0; i<ProductosN; i++)
+			   {
+   			
+   				if(Almacen[i].estado == "activo")//filtra el estado de los productos activos
+			 	 	{	
+			 	 		cout<<"-------------------------------\n";
+   						cout <<"Nombre Articulo:"<<Almacen[i].nombre<<endl;
+   						cout <<"Codigo Articulo:"<<Almacen[i].codigo<<endl;
+   						cout <<"Descripcion del Articulo:"<<Almacen[i].descripcion<<endl;
+   						cout <<"Costo Total del Articulo:$"<<Almacen[i].costoT<<endl;
+   						cout <<"Precio por unidad Articulo:$"<<Almacen[i].precioUnidad<<endl;
+   						cout <<"Exitencia Articulo:"<<Almacen[i].existencia<<" Articulos"<<endl;
+   						cout <<"Estado del Articulo:"<<Almacen[i].estado<<endl;
+   						cout <<"Stock Minimo del Articulo:"<<Almacen[i].StockMinimo<<endl;
+   						cout <<"\n"; 
+   		  		 	}
+				}
+			}
+		else if(respuesta == 'n')
+			{
+				goto SaltoMenu;
+				break;
+			}
+   		cout <<"\n";
+   		
+   	
    		 cout <<"¿Quires Salir a Menu Si = s o NO = n?"<<endl;
    		 cin >>respuesta;
    		 
-   		 if(respuesta == 's'){
-   		 	goto SaltoMenu;
-   		 	
-		}else if(respuesta == 'n'){
-			goto SaltoProceso3;
-		}
+   		 if(respuesta == 's')
+			{
+   		 		goto SaltoMenu;
+			}
+		else if(respuesta == 'n')
+			{
+				goto SaltoProceso3;
+			}
    		
    	   break;
    	   
@@ -201,9 +241,11 @@ int main(){
    		cout <<"**********************Listar o Mostrar Inventario**********************"<<endl;
    		cout <<"\n";
    		 	
-   		for(i = 0; i<ProductosN; i++){//La varible acumulativa Mostrar se ocupa aqui para mostrar el total de articulos guardados exacto; 
+   		for(i = 0; i<ProductosN; i++)
+		   {//La varible acumulativa Mostrar se ocupa aqui para mostrar el total de articulos guardados exacto; 
    			
-   			if(Almacen[i].estado == "activo"){
+   			if(Almacen[i].estado == "activo")
+			   {
    			
    			cout <<"Nombre Articulo:"<<Almacen[i].nombre<<endl;
    			cout <<"Codigo Articulo:"<<Almacen[i].codigo<<endl;
@@ -244,13 +286,59 @@ int main(){
    		cout <<"\n";
    		cout <<"**********************Listar o Mostrar Inventario de productos agotados**********************"<<endl;
    		cout <<"\n";
+   		//codigo para mostrar la cantidad de productos agotados
+   		int vendidosLocal;
+   		char preguntaL;
    		
+   		cout <<"¿Quiere mostrar el inventario de productos agotados o ingresar cantidad de productos venidos? Inventario = i y Productos vendidos = p"<<endl;
+   		cin>>preguntaL;
    		
-   		
-   		
-   		
-   		 
-   		 
+   		if(preguntaL == 'p'){
+   		cout <<"\n";
+   		cout<<"ingrese el Identificador del producto para ingreso de productos vendidos"<<endl;
+   		cin>>codigoB;
+   		cout<<"ingrese la cantidad de productos vendidos"<<endl;
+   		cin >> vendidosLocal;
+		cout<<"\n";
+			for(i=0; i<ProductosN; i++)//recorre la estructura en busca del id
+		   {
+   				if(Almacen[i].codigo == codigoB)
+				   {
+				   	Almacen[i].existencia -= vendidosLocal;
+				   	if(Almacen[i].existencia <= Almacen[i].StockMinimo)
+				   		{
+				   				Almacen[i].estado = "agotado";
+						}
+				
+					}	
+					
+					Almacen[i].vendidos = vendidosLocal;
+					
+			}
+			
+		}else{
+			
+			for(i = 0; i<ProductosN; i++)
+		 		  {
+   			
+   					if(Almacen[i].estado == "agotado")
+					   {
+					   		cout<<"------------------------------\n";
+	   						cout <<"Nombre Articulo:"<<Almacen[i].nombre<<endl;
+	   						cout <<"Codigo Articulo:"<<Almacen[i].codigo<<endl;
+	   						cout <<"Descripcion del Articulo:"<<Almacen[i].descripcion<<endl;
+	   						cout <<"Costo Total del Articulo:$"<<Almacen[i].costoT<<endl;
+	   						cout <<"Precio por unidad Articulo:$"<<Almacen[i].precioUnidad<<endl;
+	   						cout <<"Exitencia Articulo:"<<Almacen[i].existencia<<" Articulos"<<endl;
+	   						cout <<"Cantidad de Articulos vendidos:"<<Almacen[i].vendidos<<endl;
+	   						cout <<"Estado del Articulo:"<<Almacen[i].estado<<endl;
+	   						cout <<"Stock Minimo del Articulo:"<<Almacen[i].StockMinimo<<endl;	
+	   						cout <<"\n"; 
+   		 			   }
+		 		    }
+		 		    
+		 	}
+			
    		 cout <<"¿Quires Salir a Menu Si = s o NO = n?"<<endl;
    		 cin >>respuesta;
    		 
