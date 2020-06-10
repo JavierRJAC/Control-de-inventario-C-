@@ -2,6 +2,8 @@
 #include<stdio.h>
 #include<string.h>
 
+//Programa para mantener un control sobre el inventario de cualquier empresa.
+
 using namespace std;
 
 int main()
@@ -14,7 +16,7 @@ int main()
 	{
 		string nombre; //Nombre Producto.
 		int codigo;//Codigo con el que se indetifica el producto o ID.
-		string descripcion;//Descripcion del producto.
+		char descripcion[200];//Descripcion del producto.
 		float costoT;//Costo Total por Todos los productos existentes.
 		float precioUnidad;//Precio por unidad osea un solo producto.
 		int existencia;//Exitencia es el numero de productos que hay.
@@ -53,7 +55,7 @@ int main()
    
    switch(Menu){//Menu creado con selector multiple Switch.
    	
-   	//Introducir articulo.
+   	//Introducir articulo. <----------------------------------------------------------------------------Trabajo Javier.
    	case 1:
    		SaltoProceso:
    		
@@ -72,7 +74,8 @@ int main()
    			cin>>Almacen[Posiciones].nombre;
    			
    			cout <<"Ingrese un descripcion del producto"<<endl;
-   			cin>>Almacen[Posiciones].descripcion;
+   			cin.ignore();
+   			cin.getline(Almacen[Posiciones].descripcion,200);
    			
    			cout <<"Ingrese el precio por unidad"<<endl;
    			cin>>Almacen[Posiciones].precioUnidad;
@@ -85,7 +88,7 @@ int main()
    			
    			cout <<"\n";
    			
-   			Almacen[i].estado = "activo";// el estado "Si" es que hay productos si es "No" es que no hay producto.
+   			Almacen[Posiciones].estado = "activo";// el estado "Si" es que hay productos si es "No" es que no hay producto.
    			
    			Almacen[Posiciones].costoT = (Almacen[Posiciones].precioUnidad * Almacen[Posiciones].existencia);
    		    
@@ -110,7 +113,7 @@ int main()
    	  break;
    	
    	
-   	//Modificar articulo.
+   	//Modificar articulo. <----------------------------------------------------------------------------Trabajo Javier.
    	case 2:
    		 SaltoProceso2:
    		 	
@@ -131,7 +134,8 @@ int main()
    			cin>>Almacen[i].nombre;
    			
    			cout <<"Ingrese una descripcion del producto"<<endl;
-   			cin>>Almacen[i].descripcion;
+   			cin.ignore();
+   			cin.getline(Almacen[i].descripcion,200);
    			
    			cout <<"Ingrese el precio por unidad"<<endl;
    			cin>>Almacen[i].precioUnidad;
@@ -173,7 +177,7 @@ int main()
    		cout <<"**********************Eliminar articulo**********************"<<endl;
    		cout <<"\n";
    		//bloque de codigo para elimiar producto
-   		cout<<"Ingrese el identificador del producto para su eliminacion \n"<<endl;
+   		cout<<"Ingrese el identificador del producto para su eliminacion"<<endl;
    		cin>>codigoB;//almacena el id
    		
    		for(i=0; i<ProductosN; i++)//recorre la estructura en busca del id
@@ -183,10 +187,13 @@ int main()
 					Almacen[i].estado = "inactivo";//por medio del id le asigna al producto la inactividad
 					}	
 			}
+			cout <<"\n";
+			cout <<"Eliminacion Completada con !exito!"<<endl;
 		
 		cout <<"\n";
    		cout <<" ¿Desea Mostrar Inventario Si = s o NO = n ?"<<endl;//pregunta si desea mostrar el menu
    		 cin >>respuesta;
+   		cout <<"\n";
    		 
    		 if(respuesta == 's')
 			{
@@ -195,7 +202,7 @@ int main()
    			
    				if(Almacen[i].estado == "activo")//filtra el estado de los productos activos
 			 	 	{	
-			 	 		cout<<"-------------------------------\n";
+			 	 		cout<<"---------------Listado de Productos existentes---------------\n";
    						cout <<"Nombre Articulo:"<<Almacen[i].nombre<<endl;
    						cout <<"Codigo Articulo:"<<Almacen[i].codigo<<endl;
    						cout <<"Descripcion del Articulo:"<<Almacen[i].descripcion<<endl;
@@ -231,7 +238,7 @@ int main()
    	   break;
    	   
    	   
-   	  //Listar o Mostrar Inventario.
+   	  //Listar o Mostrar Inventario. <----------------------------------------------------------------------------Trabajo Javier.
    	case 4:
    		
    		 SaltoProceso4:
@@ -352,7 +359,7 @@ int main()
    	   break;
    	
    	
-   	  //Salir del programa.
+   	  //Salir del programa. <----------------------------------------------------------------------------Trabajo Javier.
    	case 6:
    	
    	     goto SaltoSalida;
